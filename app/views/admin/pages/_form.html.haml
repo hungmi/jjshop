@@ -1,0 +1,12 @@
+= simple_form_for [:admin, @page] do |f|
+  .group
+    = f.input :folder_name, label: "檔案資料夾名稱"
+  .group
+    = f.input :title, label: "標題"
+  .group
+    = f.input :description, label: "敘述"
+  .group
+    = f.input :price, label: "價錢"
+  .group
+  = f.submit "GO", data: { disable_with: "Submitting..." }, class: 'btn btn-success'
+  = link_to 'Back', root_path

@@ -1,0 +1,15 @@
+%h1
+  Pages List
+  = link_to "新增頁面", new_admin_page_path, class: 'btn btn-primary btx-xs pull-right'
+%table.table
+  %thead
+    %th 位置
+    %th 名稱
+    %th 價格
+    %th 敘述
+  - @pages.each do |page|
+    %tbody
+      %td= page.folder_name
+      %td= page.title
+      %td= page.price
+      %td= page.description

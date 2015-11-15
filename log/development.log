@@ -1,0 +1,1056 @@
+  [1m[36m (1.9ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (0.6ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+Migrating to CreateProducts (20151109121332)
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "products" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "description" text, "page_id" integer, "price" integer, "quantity" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151109121332"]]
+  [1m[35m (0.6ms)[0m  commit transaction
+Migrating to DeviseCreateUsers (20151109123022)
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "reset_password_token" varchar, "reset_password_sent_at" datetime, "remember_created_at" datetime, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" datetime, "last_sign_in_at" datetime, "current_sign_in_ip" varchar, "last_sign_in_ip" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.3ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151109123022"]]
+  [1m[36m (0.7ms)[0m  [1mcommit transaction[0m
+Migrating to AddIsAdminToUser (20151109124019)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "users" ADD "is_admin" boolean DEFAULT 'f'[0m
+  [1m[35m (0.2ms)[0m  ALTER TABLE "users" ADD "is_paid" boolean DEFAULT 'f'
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151109124019"]]
+  [1m[35m (0.5ms)[0m  commit transaction
+Migrating to CreatePhotos (20151112090005)
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "photos" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "image" varchar, "product_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151112090005"]]
+  [1m[35m (0.6ms)[0m  commit transaction
+Migrating to CreatePages (20151113121711)
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "pages" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "folder_name" varchar, "title" varchar, "description" text, "price" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151113121711"]]
+  [1m[35m (0.6ms)[0m  commit transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Exists (0.1ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."email" = 'admin@test.com' LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("email", "encrypted_password", "is_admin", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["email", "admin@test.com"], ["encrypted_password", "$2a$10$ZUws.eRvcxDGGOZ3tX3jmeQGOnUi9NFJuKH.XXCnKnsocJmfQZm5u"], ["is_admin", "t"], ["created_at", "2015-11-14 09:31:15.454852"], ["updated_at", "2015-11-14 09:31:15.454852"]]
+  [1m[35m (0.5ms)[0m  commit transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "products" ("title", "description", "page_id", "price", "quantity", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["title", "好產品"], ["description", "好產品不解釋"], ["page_id", 1], ["price", 9999], ["quantity", 1], ["created_at", "2015-11-14 09:31:15.464562"], ["updated_at", "2015-11-14 09:31:15.464562"]]
+  [1m[36m (0.7ms)[0m  [1mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "products" ("title", "description", "page_id", "price", "quantity", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["title", "好產品"], ["description", "好產品不解釋"], ["page_id", 2], ["price", 9999], ["quantity", 1], ["created_at", "2015-11-14 09:31:15.467082"], ["updated_at", "2015-11-14 09:31:15.467082"]]
+  [1m[35m (0.7ms)[0m  commit transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "products" ("title", "description", "page_id", "price", "quantity", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["title", "好產品"], ["description", "好產品不解釋"], ["page_id", 3], ["price", 9999], ["quantity", 1], ["created_at", "2015-11-14 09:31:15.469750"], ["updated_at", "2015-11-14 09:31:15.469750"]]
+  [1m[36m (0.7ms)[0m  [1mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "products" ("title", "description", "page_id", "price", "quantity", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["title", "好產品"], ["description", "好產品不解釋"], ["page_id", 4], ["price", 9999], ["quantity", 1], ["created_at", "2015-11-14 09:31:15.472624"], ["updated_at", "2015-11-14 09:31:15.472624"]]
+  [1m[35m (0.5ms)[0m  commit transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "products" ("title", "description", "page_id", "price", "quantity", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["title", "好產品"], ["description", "好產品不解釋"], ["page_id", 5], ["price", 9999], ["quantity", 1], ["created_at", "2015-11-14 09:31:15.474721"], ["updated_at", "2015-11-14 09:31:15.474721"]]
+  [1m[36m (1.0ms)[0m  [1mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "products" ("title", "description", "page_id", "price", "quantity", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["title", "好產品"], ["description", "好產品不解釋"], ["page_id", 6], ["price", 9999], ["quantity", 1], ["created_at", "2015-11-14 09:31:15.478012"], ["updated_at", "2015-11-14 09:31:15.478012"]]
+  [1m[35m (0.5ms)[0m  commit transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "pages" ("folder_name", "title", "description", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?)  [["folder_name", "stylish_portfolio"], ["title", "時尚櫥窗"], ["description", "適合潮流單品"], ["price", 299], ["created_at", "2015-11-14 09:31:15.490966"], ["updated_at", "2015-11-14 09:31:15.490966"]]
+  [1m[36m (0.6ms)[0m  [1mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "pages" ("folder_name", "title", "description", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?)[0m  [["folder_name", "creative"], ["title", "創造力"], ["description", "適合潮流單品"], ["price", 299], ["created_at", "2015-11-14 09:31:15.493920"], ["updated_at", "2015-11-14 09:31:15.493920"]]
+  [1m[35m (0.5ms)[0m  commit transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "pages" ("folder_name", "title", "description", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?)  [["folder_name", "agency"], ["title", "總部"], ["description", "適合潮流單品"], ["price", 299], ["created_at", "2015-11-14 09:31:15.496275"], ["updated_at", "2015-11-14 09:31:15.496275"]]
+  [1m[36m (0.6ms)[0m  [1mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "pages" ("folder_name", "title", "description", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?)[0m  [["folder_name", "business_casual"], ["title", "商業典範"], ["description", "適合潮流單品"], ["price", 299], ["created_at", "2015-11-14 09:31:15.498713"], ["updated_at", "2015-11-14 09:31:15.498713"]]
+  [1m[35m (0.5ms)[0m  commit transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "pages" ("folder_name", "title", "description", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?)  [["folder_name", "grayscale"], ["title", "灰階"], ["description", "適合潮流單品"], ["price", 299], ["created_at", "2015-11-14 09:31:15.501051"], ["updated_at", "2015-11-14 09:31:15.501051"]]
+  [1m[36m (0.6ms)[0m  [1mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "pages" ("folder_name", "title", "description", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?)[0m  [["folder_name", "landing_page"], ["title", "最佳登錄頁"], ["description", "適合潮流單品"], ["price", 299], ["created_at", "2015-11-14 09:31:15.503445"], ["updated_at", "2015-11-14 09:31:15.503445"]]
+  [1m[35m (0.5ms)[0m  commit transaction
+
+
+Started GET "/products/1" for ::1 at 2015-11-14 17:31:25 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by ProductsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mProduct Load (0.2ms)[0m  SELECT  "products".* FROM "products" WHERE "products"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mPage Load (0.1ms)[0m  [1mSELECT  "pages".* FROM "pages" WHERE "pages"."id" = ? LIMIT 1[0m  [["id", 1]]
+  Rendered pages/stylish_portfolio.html.haml (31.3ms)
+Completed 200 OK in 87ms (Views: 36.8ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/assets/stylish_portfolio/css/bootstrap.min.css" for ::1 at 2015-11-14 17:31:26 +0800
+
+
+Started GET "/assets/stylish_portfolio/css/stylish-portfolio.css" for ::1 at 2015-11-14 17:31:26 +0800
+
+
+Started GET "/assets/stylish_portfolio/font-awesome/css/font-awesome.min.css" for ::1 at 2015-11-14 17:31:26 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/portfolio-1.jpg" for ::1 at 2015-11-14 17:31:26 +0800
+
+
+Started GET "/assets/stylish_portfolio/js/jquery.js" for ::1 at 2015-11-14 17:31:26 +0800
+
+
+Started GET "/assets/stylish_portfolio/js/bootstrap.min.js" for ::1 at 2015-11-14 17:31:26 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/portfolio-2.jpg" for ::1 at 2015-11-14 17:31:26 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/portfolio-3.jpg" for ::1 at 2015-11-14 17:31:26 +0800
+
+
+Started GET "/assets/stylish_portfolio/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0" for ::1 at 2015-11-14 17:31:26 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/portfolio-4.jpg" for ::1 at 2015-11-14 17:31:26 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/bg.jpg" for ::1 at 2015-11-14 17:31:26 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/callout.jpg" for ::1 at 2015-11-14 17:31:26 +0800
+
+
+Started GET "/products/2" for ::1 at 2015-11-14 17:31:30 +0800
+Processing by ProductsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[35mProduct Load (0.1ms)[0m  SELECT  "products".* FROM "products" WHERE "products"."id" = ? LIMIT 1  [["id", 2]]
+  [1m[36mPage Load (0.1ms)[0m  [1mSELECT  "pages".* FROM "pages" WHERE "pages"."id" = ? LIMIT 1[0m  [["id", 2]]
+  Rendered pages/creative.html.haml (26.4ms)
+Completed 200 OK in 36ms (Views: 29.4ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/assets/creative/css/animate.min.css" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/assets/creative/css/bootstrap.min.css" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/assets/creative/img/portfolio/1.jpg" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/assets/stylish_portfolio/js/jquery.js" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/assets/stylish_portfolio/js/bootstrap.min.js" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/assets/creative/css/creative.css" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/assets/creative/js/jquery.easing.min.js" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/assets/creative/js/jquery.fittext.js" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/assets/creative/js/wow.min.js" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/assets/creative/js/creative.js" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/assets/creative/img/portfolio/2.jpg" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/assets/creative/img/portfolio/3.jpg" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/assets/creative/img/portfolio/4.jpg" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/assets/creative/img/portfolio/6.jpg" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/assets/creative/img/portfolio/5.jpg" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/assets/creative/img/header.jpg" for ::1 at 2015-11-14 17:31:30 +0800
+
+
+Started GET "/products/3" for ::1 at 2015-11-14 17:31:40 +0800
+Processing by ProductsController#show as HTML
+  Parameters: {"id"=>"3"}
+  [1m[35mProduct Load (0.1ms)[0m  SELECT  "products".* FROM "products" WHERE "products"."id" = ? LIMIT 1  [["id", 3]]
+  [1m[36mPage Load (0.2ms)[0m  [1mSELECT  "pages".* FROM "pages" WHERE "pages"."id" = ? LIMIT 1[0m  [["id", 3]]
+  Rendered pages/agency.html.haml (92.5ms)
+Completed 200 OK in 98ms (Views: 95.4ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/assets/agency/css/bootstrap.min.css" for ::1 at 2015-11-14 17:31:40 +0800
+
+
+Started GET "/assets/agency/css/agency.css" for ::1 at 2015-11-14 17:31:40 +0800
+
+
+Started GET "/assets/agency/font-awesome/css/font-awesome.min.css" for ::1 at 2015-11-14 17:31:40 +0800
+
+
+Started GET "/assets/agency/js/jquery.js" for ::1 at 2015-11-14 17:31:40 +0800
+
+
+Started GET "/assets/agency/img/portfolio/roundicons.png" for ::1 at 2015-11-14 17:31:40 +0800
+
+
+Started GET "/assets/agency/js/bootstrap.min.js" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/js/classie.js" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/js/cbpAnimatedHeader.js" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/js/jqBootstrapValidation.js" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/js/contact_me.js" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/js/agency.js" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/header-bg.jpg" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/portfolio/startup-framework.png" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/portfolio/treehouse.png" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/portfolio/golden.png" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/portfolio/escape.png" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/portfolio/dreams.png" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/about/1.jpg" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/about/2.jpg" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/about/3.jpg" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/about/4.jpg" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/team/1.jpg" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/team/2.jpg" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/team/3.jpg" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/logos/envato.jpg" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/logos/designmodo.jpg" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/logos/themeforest.jpg" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/logos/creative-market.jpg" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/portfolio/roundicons-free.png" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/portfolio/startup-framework-preview.png" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/portfolio/treehouse-preview.png" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/portfolio/golden-preview.png" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/portfolio/escape-preview.png" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/portfolio/dreams-preview.png" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/assets/agency/img/map-image.png" for ::1 at 2015-11-14 17:31:41 +0800
+
+
+Started GET "/products/4" for ::1 at 2015-11-14 17:31:49 +0800
+Processing by ProductsController#show as HTML
+  Parameters: {"id"=>"4"}
+  [1m[35mProduct Load (0.2ms)[0m  SELECT  "products".* FROM "products" WHERE "products"."id" = ? LIMIT 1  [["id", 4]]
+  [1m[36mPage Load (0.2ms)[0m  [1mSELECT  "pages".* FROM "pages" WHERE "pages"."id" = ? LIMIT 1[0m  [["id", 4]]
+  Rendered pages/business_casual.html.haml (17.4ms)
+Completed 200 OK in 23ms (Views: 19.9ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/assets/business_casual/css/bootstrap.min.css" for ::1 at 2015-11-14 17:31:49 +0800
+
+
+Started GET "/assets/business_casual/css/business-casual.css" for ::1 at 2015-11-14 17:31:49 +0800
+
+
+Started GET "/assets/business_casual/img/slide-1.jpg" for ::1 at 2015-11-14 17:31:49 +0800
+
+
+Started GET "/assets/business_casual/js/jquery.js" for ::1 at 2015-11-14 17:31:49 +0800
+
+
+Started GET "/assets/business_casual/js/bootstrap.min.js" for ::1 at 2015-11-14 17:31:49 +0800
+
+
+Started GET "/assets/business_casual/img/intro-pic.jpg" for ::1 at 2015-11-14 17:31:49 +0800
+
+
+Started GET "/assets/business_casual/img/slide-2.jpg" for ::1 at 2015-11-14 17:31:49 +0800
+
+
+Started GET "/assets/business_casual/img/bg.jpg" for ::1 at 2015-11-14 17:31:49 +0800
+
+
+Started GET "/assets/business_casual/img/slide-3.jpg" for ::1 at 2015-11-14 17:31:49 +0800
+
+
+Started GET "/products/blog.html" for ::1 at 2015-11-14 17:31:50 +0800
+Processing by ProductsController#show as HTML
+  Parameters: {"id"=>"blog"}
+  [1m[35mProduct Load (0.1ms)[0m  SELECT  "products".* FROM "products" WHERE "products"."id" = ? LIMIT 1  [["id", 0]]
+Completed 404 Not Found in 1ms (ActiveRecord: 0.1ms)
+
+ActiveRecord::RecordNotFound (Couldn't find Product with 'id'=blog):
+  app/controllers/products_controller.rb:14:in `set_product'
+
+
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/actionpack-4.2.3/lib/action_dispatch/middleware/templates/rescues/_source.erb (4.4ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/actionpack-4.2.3/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.7ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/actionpack-4.2.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.9ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/actionpack-4.2.3/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (52.0ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/_markup.html.erb (0.5ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.3ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/console.js.erb within layouts/javascript (55.1ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/main.js.erb within layouts/javascript (0.3ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.4ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/index.html.erb (122.2ms)
+
+
+Started GET "/products/5" for ::1 at 2015-11-14 17:31:58 +0800
+Processing by ProductsController#show as HTML
+  Parameters: {"id"=>"5"}
+  [1m[36mProduct Load (0.3ms)[0m  [1mSELECT  "products".* FROM "products" WHERE "products"."id" = ? LIMIT 1[0m  [["id", 5]]
+  [1m[35mPage Load (0.2ms)[0m  SELECT  "pages".* FROM "pages" WHERE "pages"."id" = ? LIMIT 1  [["id", 5]]
+  Rendered pages/grayscale.html.haml (30.7ms)
+Completed 200 OK in 39ms (Views: 33.2ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/assets/grayscale/css/grayscale.css" for ::1 at 2015-11-14 17:31:58 +0800
+
+
+Started GET "/assets/grayscale/font-awesome/css/font-awesome.min.css" for ::1 at 2015-11-14 17:31:58 +0800
+
+
+Started GET "/assets/grayscale/js/jquery.js" for ::1 at 2015-11-14 17:31:58 +0800
+
+
+Started GET "/assets/grayscale/js/jquery.easing.min.js" for ::1 at 2015-11-14 17:31:58 +0800
+
+
+Started GET "/assets/grayscale/js/bootstrap.min.js" for ::1 at 2015-11-14 17:31:58 +0800
+
+
+Started GET "/assets/grayscale/css/bootstrap.min.css" for ::1 at 2015-11-14 17:31:58 +0800
+
+
+Started GET "/assets/grayscale/js/grayscale.js" for ::1 at 2015-11-14 17:31:58 +0800
+
+
+Started GET "/assets/grayscale/img/intro-bg.jpg" for ::1 at 2015-11-14 17:31:58 +0800
+
+
+Started GET "/assets/grayscale/img/downloads-bg.jpg" for ::1 at 2015-11-14 17:31:58 +0800
+
+
+Started GET "/assets/grayscale/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0" for ::1 at 2015-11-14 17:31:58 +0800
+
+
+Started GET "/products/img/map-marker.png" for ::1 at 2015-11-14 17:31:59 +0800
+
+ActionController::RoutingError (No route matches [GET] "/products/img/map-marker.png"):
+  actionpack (4.2.3) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  web-console (2.2.1) lib/web_console/middleware.rb:39:in `call'
+  actionpack (4.2.3) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.2.3) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.2.3) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.2.3) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.2.3) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.2.3) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.2.3) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.2.3) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.6.4) lib/rack/methodoverride.rb:22:in `call'
+  rack (1.6.4) lib/rack/runtime.rb:18:in `call'
+  activesupport (4.2.3) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+  rack (1.6.4) lib/rack/lock.rb:17:in `call'
+  actionpack (4.2.3) lib/action_dispatch/middleware/static.rb:116:in `call'
+  rack (1.6.4) lib/rack/sendfile.rb:113:in `call'
+  railties (4.2.3) lib/rails/engine.rb:518:in `call'
+  railties (4.2.3) lib/rails/application.rb:165:in `call'
+  rack (1.6.4) lib/rack/lock.rb:17:in `call'
+  rack (1.6.4) lib/rack/content_length.rb:15:in `call'
+  rack (1.6.4) lib/rack/handler/webrick.rb:88:in `service'
+  /usr/local/Cellar/ruby/2.2.3/lib/ruby/2.2.0/webrick/httpserver.rb:138:in `service'
+  /usr/local/Cellar/ruby/2.2.3/lib/ruby/2.2.0/webrick/httpserver.rb:94:in `run'
+  /usr/local/Cellar/ruby/2.2.3/lib/ruby/2.2.0/webrick/server.rb:294:in `block in start_thread'
+
+
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/actionpack-4.2.3/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.0ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/actionpack-4.2.3/lib/action_dispatch/middleware/templates/routes/_route.html.erb (3.2ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/actionpack-4.2.3/lib/action_dispatch/middleware/templates/routes/_table.html.erb (6.7ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/actionpack-4.2.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.4ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/actionpack-4.2.3/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (207.8ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/_markup.html.erb (0.4ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/style.css.erb within layouts/inlined_string (1.9ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/console.js.erb within layouts/javascript (106.8ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/main.js.erb within layouts/javascript (0.9ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.5ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/index.html.erb (216.0ms)
+
+
+Started GET "/products/6" for ::1 at 2015-11-14 17:32:06 +0800
+Processing by ProductsController#show as HTML
+  Parameters: {"id"=>"6"}
+  [1m[36mProduct Load (0.2ms)[0m  [1mSELECT  "products".* FROM "products" WHERE "products"."id" = ? LIMIT 1[0m  [["id", 6]]
+  [1m[35mPage Load (0.1ms)[0m  SELECT  "pages".* FROM "pages" WHERE "pages"."id" = ? LIMIT 1  [["id", 6]]
+  Rendered pages/landing_page.html.haml (16.0ms)
+Completed 200 OK in 20ms (Views: 17.9ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/assets/landing_page/css/landing-page.css" for ::1 at 2015-11-14 17:32:06 +0800
+
+
+Started GET "/assets/landing_page/js/jquery.js" for ::1 at 2015-11-14 17:32:06 +0800
+
+
+Started GET "/assets/landing_page/font-awesome/css/font-awesome.min.css" for ::1 at 2015-11-14 17:32:06 +0800
+
+
+Started GET "/assets/landing_page/img/ipad.png" for ::1 at 2015-11-14 17:32:06 +0800
+
+
+Started GET "/assets/landing_page/js/bootstrap.min.js" for ::1 at 2015-11-14 17:32:06 +0800
+
+
+Started GET "/assets/landing_page/css/bootstrap.min.css" for ::1 at 2015-11-14 17:32:06 +0800
+
+
+Started GET "/assets/landing_page/img/dog.png" for ::1 at 2015-11-14 17:32:06 +0800
+
+
+Started GET "/assets/landing_page/img/phones.png" for ::1 at 2015-11-14 17:32:06 +0800
+
+
+Started GET "/assets/landing_page/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0" for ::1 at 2015-11-14 17:32:06 +0800
+
+
+Started GET "/assets/landing_page/img/intro-bg.jpg" for ::1 at 2015-11-14 17:32:06 +0800
+
+
+Started GET "/assets/landing_page/img/banner-bg.jpg" for ::1 at 2015-11-14 17:32:06 +0800
+
+
+Started GET "/" for ::1 at 2015-11-14 17:32:49 +0800
+Processing by ProductsController#index as HTML
+  [1m[36mProduct Load (0.1ms)[0m  [1mSELECT "products".* FROM "products"[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1  [["product_id", 1]]
+  [1m[36mPhoto Load (0.1ms)[0m  [1mSELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1[0m  [["product_id", 2]]
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1  [["product_id", 3]]
+  [1m[36mPhoto Load (0.3ms)[0m  [1mSELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1[0m  [["product_id", 4]]
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1  [["product_id", 5]]
+  [1m[36mPhoto Load (0.1ms)[0m  [1mSELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1[0m  [["product_id", 6]]
+  Rendered products/index.html.haml within layouts/application (15.4ms)
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 1]]
+  Rendered common/_nav.html.haml (22.1ms)
+Completed 200 OK in 4939ms (Views: 4937.0ms | ActiveRecord: 1.4ms)
+
+
+Started GET "/" for ::1 at 2015-11-14 17:32:54 +0800
+Processing by ProductsController#index as HTML
+  [1m[36mProduct Load (0.1ms)[0m  [1mSELECT "products".* FROM "products"[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1  [["product_id", 1]]
+  [1m[36mPhoto Load (0.1ms)[0m  [1mSELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1[0m  [["product_id", 2]]
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1  [["product_id", 3]]
+  [1m[36mPhoto Load (0.1ms)[0m  [1mSELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1[0m  [["product_id", 4]]
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1  [["product_id", 5]]
+  [1m[36mPhoto Load (0.1ms)[0m  [1mSELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1[0m  [["product_id", 6]]
+  Rendered products/index.html.haml within layouts/application (6.5ms)
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 1]]
+  Rendered common/_nav.html.haml (1.5ms)
+Completed 200 OK in 114ms (Views: 112.8ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/products/1" for ::1 at 2015-11-14 17:32:57 +0800
+Processing by ProductsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mProduct Load (0.1ms)[0m  [1mSELECT  "products".* FROM "products" WHERE "products"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35mPage Load (0.1ms)[0m  SELECT  "pages".* FROM "pages" WHERE "pages"."id" = ? LIMIT 1  [["id", 1]]
+  Rendered pages/stylish_portfolio.html.haml (0.6ms)
+Completed 200 OK in 4ms (Views: 2.1ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/assets/stylish_portfolio/css/stylish-portfolio.css" for ::1 at 2015-11-14 17:32:57 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/portfolio-1.jpg" for ::1 at 2015-11-14 17:32:57 +0800
+
+
+Started GET "/assets/stylish_portfolio/css/bootstrap.min.css" for ::1 at 2015-11-14 17:32:57 +0800
+
+
+Started GET "/assets/stylish_portfolio/js/jquery.js" for ::1 at 2015-11-14 17:32:57 +0800
+
+
+Started GET "/assets/stylish_portfolio/font-awesome/css/font-awesome.min.css" for ::1 at 2015-11-14 17:32:57 +0800
+
+
+Started GET "/assets/stylish_portfolio/js/bootstrap.min.js" for ::1 at 2015-11-14 17:32:57 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/portfolio-3.jpg" for ::1 at 2015-11-14 17:32:57 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/portfolio-4.jpg" for ::1 at 2015-11-14 17:32:57 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/portfolio-2.jpg" for ::1 at 2015-11-14 17:32:57 +0800
+
+
+Started GET "/assets/stylish_portfolio/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0" for ::1 at 2015-11-14 17:32:57 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/bg.jpg" for ::1 at 2015-11-14 17:32:57 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/callout.jpg" for ::1 at 2015-11-14 17:32:57 +0800
+
+
+Started GET "/products/2" for ::1 at 2015-11-14 17:32:59 +0800
+Processing by ProductsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mProduct Load (0.1ms)[0m  [1mSELECT  "products".* FROM "products" WHERE "products"."id" = ? LIMIT 1[0m  [["id", 2]]
+  [1m[35mPage Load (0.1ms)[0m  SELECT  "pages".* FROM "pages" WHERE "pages"."id" = ? LIMIT 1  [["id", 2]]
+  Rendered pages/creative.html.haml (0.6ms)
+Completed 200 OK in 4ms (Views: 1.9ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/assets/creative/css/bootstrap.min.css" for ::1 at 2015-11-14 17:32:59 +0800
+
+
+Started GET "/assets/creative/css/creative.css" for ::1 at 2015-11-14 17:32:59 +0800
+
+
+Started GET "/assets/creative/img/portfolio/1.jpg" for ::1 at 2015-11-14 17:32:59 +0800
+
+
+Started GET "/assets/creative/css/animate.min.css" for ::1 at 2015-11-14 17:32:59 +0800
+
+
+Started GET "/assets/creative/js/jquery.fittext.js" for ::1 at 2015-11-14 17:32:59 +0800
+
+
+Started GET "/assets/stylish_portfolio/js/bootstrap.min.js" for ::1 at 2015-11-14 17:32:59 +0800
+
+
+Started GET "/assets/stylish_portfolio/js/jquery.js" for ::1 at 2015-11-14 17:32:59 +0800
+
+
+Started GET "/assets/creative/js/wow.min.js" for ::1 at 2015-11-14 17:32:59 +0800
+
+
+Started GET "/assets/creative/js/jquery.easing.min.js" for ::1 at 2015-11-14 17:32:59 +0800
+
+
+Started GET "/assets/creative/js/creative.js" for ::1 at 2015-11-14 17:32:59 +0800
+
+
+Started GET "/assets/creative/img/portfolio/2.jpg" for ::1 at 2015-11-14 17:33:00 +0800
+
+
+Started GET "/assets/creative/img/portfolio/5.jpg" for ::1 at 2015-11-14 17:33:00 +0800
+
+
+Started GET "/assets/creative/img/portfolio/3.jpg" for ::1 at 2015-11-14 17:33:00 +0800
+
+
+Started GET "/assets/creative/img/portfolio/6.jpg" for ::1 at 2015-11-14 17:33:00 +0800
+
+
+Started GET "/assets/creative/img/portfolio/4.jpg" for ::1 at 2015-11-14 17:33:00 +0800
+
+
+Started GET "/assets/creative/img/header.jpg" for ::1 at 2015-11-14 17:33:00 +0800
+
+
+Started GET "/products/3" for ::1 at 2015-11-14 17:33:01 +0800
+Processing by ProductsController#show as HTML
+  Parameters: {"id"=>"3"}
+  [1m[36mProduct Load (0.1ms)[0m  [1mSELECT  "products".* FROM "products" WHERE "products"."id" = ? LIMIT 1[0m  [["id", 3]]
+  [1m[35mPage Load (0.1ms)[0m  SELECT  "pages".* FROM "pages" WHERE "pages"."id" = ? LIMIT 1  [["id", 3]]
+  Rendered pages/agency.html.haml (1.8ms)
+Completed 200 OK in 7ms (Views: 4.3ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/assets/agency/css/bootstrap.min.css" for ::1 at 2015-11-14 17:33:01 +0800
+
+
+Started GET "/assets/agency/css/agency.css" for ::1 at 2015-11-14 17:33:01 +0800
+
+
+Started GET "/assets/agency/font-awesome/css/font-awesome.min.css" for ::1 at 2015-11-14 17:33:01 +0800
+
+
+Started GET "/assets/agency/img/portfolio/roundicons.png" for ::1 at 2015-11-14 17:33:01 +0800
+
+
+Started GET "/assets/agency/js/jquery.js" for ::1 at 2015-11-14 17:33:01 +0800
+
+
+Started GET "/assets/agency/js/bootstrap.min.js" for ::1 at 2015-11-14 17:33:01 +0800
+
+
+Started GET "/assets/agency/js/classie.js" for ::1 at 2015-11-14 17:33:01 +0800
+
+
+Started GET "/assets/agency/js/cbpAnimatedHeader.js" for ::1 at 2015-11-14 17:33:01 +0800
+
+
+Started GET "/assets/agency/js/agency.js" for ::1 at 2015-11-14 17:33:01 +0800
+
+
+Started GET "/assets/agency/js/jqBootstrapValidation.js" for ::1 at 2015-11-14 17:33:01 +0800
+
+
+Started GET "/assets/agency/img/portfolio/startup-framework.png" for ::1 at 2015-11-14 17:33:01 +0800
+
+
+Started GET "/assets/agency/js/contact_me.js" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/portfolio/dreams.png" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/portfolio/golden.png" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/about/2.jpg" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/portfolio/escape.png" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/about/3.jpg" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/portfolio/treehouse.png" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/about/1.jpg" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/team/1.jpg" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/team/2.jpg" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/team/3.jpg" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/about/4.jpg" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/header-bg.jpg" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/logos/designmodo.jpg" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/logos/themeforest.jpg" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/logos/envato.jpg" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/portfolio/roundicons-free.png" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/logos/creative-market.jpg" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/portfolio/startup-framework-preview.png" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/portfolio/treehouse-preview.png" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/portfolio/escape-preview.png" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/portfolio/golden-preview.png" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/portfolio/dreams-preview.png" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/assets/agency/img/map-image.png" for ::1 at 2015-11-14 17:33:02 +0800
+
+
+Started GET "/products/4" for ::1 at 2015-11-14 17:33:03 +0800
+Processing by ProductsController#show as HTML
+  Parameters: {"id"=>"4"}
+  [1m[36mProduct Load (0.1ms)[0m  [1mSELECT  "products".* FROM "products" WHERE "products"."id" = ? LIMIT 1[0m  [["id", 4]]
+  [1m[35mPage Load (0.1ms)[0m  SELECT  "pages".* FROM "pages" WHERE "pages"."id" = ? LIMIT 1  [["id", 4]]
+  Rendered pages/business_casual.html.haml (1.0ms)
+Completed 200 OK in 5ms (Views: 2.5ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/assets/business_casual/css/bootstrap.min.css" for ::1 at 2015-11-14 17:33:03 +0800
+
+
+Started GET "/assets/business_casual/css/business-casual.css" for ::1 at 2015-11-14 17:33:03 +0800
+
+
+Started GET "/assets/business_casual/js/jquery.js" for ::1 at 2015-11-14 17:33:03 +0800
+
+
+Started GET "/assets/business_casual/img/slide-1.jpg" for ::1 at 2015-11-14 17:33:03 +0800
+
+
+Started GET "/assets/business_casual/js/bootstrap.min.js" for ::1 at 2015-11-14 17:33:03 +0800
+
+
+Started GET "/assets/business_casual/img/slide-2.jpg" for ::1 at 2015-11-14 17:33:03 +0800
+
+
+Started GET "/assets/business_casual/img/slide-3.jpg" for ::1 at 2015-11-14 17:33:03 +0800
+
+
+Started GET "/assets/business_casual/img/intro-pic.jpg" for ::1 at 2015-11-14 17:33:03 +0800
+
+
+Started GET "/assets/business_casual/img/bg.jpg" for ::1 at 2015-11-14 17:33:03 +0800
+
+
+Started GET "/products/5" for ::1 at 2015-11-14 17:33:05 +0800
+Processing by ProductsController#show as HTML
+  Parameters: {"id"=>"5"}
+  [1m[36mProduct Load (0.2ms)[0m  [1mSELECT  "products".* FROM "products" WHERE "products"."id" = ? LIMIT 1[0m  [["id", 5]]
+  [1m[35mPage Load (0.1ms)[0m  SELECT  "pages".* FROM "pages" WHERE "pages"."id" = ? LIMIT 1  [["id", 5]]
+  Rendered pages/grayscale.html.haml (0.5ms)
+Completed 200 OK in 5ms (Views: 1.8ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/assets/grayscale/css/bootstrap.min.css" for ::1 at 2015-11-14 17:33:05 +0800
+
+
+Started GET "/assets/grayscale/css/grayscale.css" for ::1 at 2015-11-14 17:33:05 +0800
+
+
+Started GET "/assets/grayscale/font-awesome/css/font-awesome.min.css" for ::1 at 2015-11-14 17:33:05 +0800
+
+
+Started GET "/assets/grayscale/js/jquery.js" for ::1 at 2015-11-14 17:33:05 +0800
+
+
+Started GET "/assets/grayscale/js/jquery.easing.min.js" for ::1 at 2015-11-14 17:33:05 +0800
+
+
+Started GET "/assets/grayscale/js/bootstrap.min.js" for ::1 at 2015-11-14 17:33:05 +0800
+
+
+Started GET "/assets/grayscale/js/grayscale.js" for ::1 at 2015-11-14 17:33:05 +0800
+
+
+Started GET "/assets/grayscale/img/intro-bg.jpg" for ::1 at 2015-11-14 17:33:05 +0800
+
+
+Started GET "/assets/grayscale/img/downloads-bg.jpg" for ::1 at 2015-11-14 17:33:05 +0800
+
+
+Started GET "/assets/grayscale/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0" for ::1 at 2015-11-14 17:33:05 +0800
+
+
+Started GET "/products/img/map-marker.png" for ::1 at 2015-11-14 17:33:06 +0800
+
+ActionController::RoutingError (No route matches [GET] "/products/img/map-marker.png"):
+  actionpack (4.2.3) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  web-console (2.2.1) lib/web_console/middleware.rb:39:in `call'
+  actionpack (4.2.3) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.2.3) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.2.3) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.2.3) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.2.3) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.2.3) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.2.3) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.2.3) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.6.4) lib/rack/methodoverride.rb:22:in `call'
+  rack (1.6.4) lib/rack/runtime.rb:18:in `call'
+  activesupport (4.2.3) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+  rack (1.6.4) lib/rack/lock.rb:17:in `call'
+  actionpack (4.2.3) lib/action_dispatch/middleware/static.rb:116:in `call'
+  rack (1.6.4) lib/rack/sendfile.rb:113:in `call'
+  railties (4.2.3) lib/rails/engine.rb:518:in `call'
+  railties (4.2.3) lib/rails/application.rb:165:in `call'
+  rack (1.6.4) lib/rack/lock.rb:17:in `call'
+  rack (1.6.4) lib/rack/content_length.rb:15:in `call'
+  rack (1.6.4) lib/rack/handler/webrick.rb:88:in `service'
+  /usr/local/Cellar/ruby/2.2.3/lib/ruby/2.2.0/webrick/httpserver.rb:138:in `service'
+  /usr/local/Cellar/ruby/2.2.3/lib/ruby/2.2.0/webrick/httpserver.rb:94:in `run'
+  /usr/local/Cellar/ruby/2.2.3/lib/ruby/2.2.0/webrick/server.rb:294:in `block in start_thread'
+
+
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/actionpack-4.2.3/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.4ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/actionpack-4.2.3/lib/action_dispatch/middleware/templates/routes/_route.html.erb (3.3ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/actionpack-4.2.3/lib/action_dispatch/middleware/templates/routes/_table.html.erb (5.5ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/actionpack-4.2.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (2.5ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/actionpack-4.2.3/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (302.6ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/_markup.html.erb (0.5ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.8ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.5ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.4ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/console.js.erb within layouts/javascript (62.8ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/main.js.erb within layouts/javascript (0.6ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.7ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/web-console-2.2.1/lib/web_console/templates/index.html.erb (212.4ms)
+
+
+Started GET "/products/6" for ::1 at 2015-11-14 17:33:07 +0800
+Processing by ProductsController#show as HTML
+  Parameters: {"id"=>"6"}
+  [1m[36mProduct Load (0.2ms)[0m  [1mSELECT  "products".* FROM "products" WHERE "products"."id" = ? LIMIT 1[0m  [["id", 6]]
+  [1m[35mPage Load (0.2ms)[0m  SELECT  "pages".* FROM "pages" WHERE "pages"."id" = ? LIMIT 1  [["id", 6]]
+  Rendered pages/landing_page.html.haml (0.6ms)
+Completed 200 OK in 4ms (Views: 1.8ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/assets/landing_page/css/bootstrap.min.css" for ::1 at 2015-11-14 17:33:07 +0800
+
+
+Started GET "/assets/landing_page/font-awesome/css/font-awesome.min.css" for ::1 at 2015-11-14 17:33:07 +0800
+
+
+Started GET "/assets/landing_page/css/landing-page.css" for ::1 at 2015-11-14 17:33:07 +0800
+
+
+Started GET "/assets/landing_page/img/ipad.png" for ::1 at 2015-11-14 17:33:07 +0800
+
+
+Started GET "/assets/landing_page/js/bootstrap.min.js" for ::1 at 2015-11-14 17:33:07 +0800
+
+
+Started GET "/assets/landing_page/js/jquery.js" for ::1 at 2015-11-14 17:33:07 +0800
+
+
+Started GET "/assets/landing_page/img/phones.png" for ::1 at 2015-11-14 17:33:07 +0800
+
+
+Started GET "/assets/landing_page/img/dog.png" for ::1 at 2015-11-14 17:33:07 +0800
+
+
+Started GET "/assets/landing_page/img/intro-bg.jpg" for ::1 at 2015-11-14 17:33:07 +0800
+
+
+Started GET "/assets/landing_page/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0" for ::1 at 2015-11-14 17:33:07 +0800
+
+
+Started GET "/assets/landing_page/img/banner-bg.jpg" for ::1 at 2015-11-14 17:33:07 +0800
+
+
+Started GET "/users/sign_in" for ::1 at 2015-11-14 17:33:09 +0800
+Processing by Devise::SessionsController#new as HTML
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/devise-3.5.2/app/views/devise/shared/_links.html.erb (1.2ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/devise-3.5.2/app/views/devise/sessions/new.html.erb within layouts/application (38.1ms)
+  Rendered common/_nav.html.haml (0.4ms)
+Completed 200 OK in 141ms (Views: 136.9ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/users/sign_in" for ::1 at 2015-11-14 17:33:14 +0800
+Processing by Devise::SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"B2p0UNpu7aO0Pxc4od1EGNUGPWaI01ROb/40493FrhKqX8SdMT02MCuEJGz6ScinUSeVp4aiNc/GC88t1B1Thg==", "user"=>{"email"=>"admin@test.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Log in"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."email" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["email", "admin@test.com"]]
+Completed 401 Unauthorized in 83ms (ActiveRecord: 0.2ms)
+Processing by Devise::SessionsController#new as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"B2p0UNpu7aO0Pxc4od1EGNUGPWaI01ROb/40493FrhKqX8SdMT02MCuEJGz6ScinUSeVp4aiNc/GC88t1B1Thg==", "user"=>{"email"=>"admin@test.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Log in"}
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/devise-3.5.2/app/views/devise/shared/_links.html.erb (0.3ms)
+  Rendered /usr/local/lib/ruby/gems/2.2.0/gems/devise-3.5.2/app/views/devise/sessions/new.html.erb within layouts/application (3.7ms)
+  Rendered common/_nav.html.haml (0.3ms)
+Completed 200 OK in 168ms (Views: 96.2ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/users/sign_in" for ::1 at 2015-11-14 17:33:18 +0800
+Processing by Devise::SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"eIctgsChNhxz6+SaZQk9rjaTgfx604aJN0iItQU/hfnVsp1PK/Ltj+xQ184+nbERsrIpPXSi5wievXN7DOd4bQ==", "user"=>{"email"=>"admin@test.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Log in"}
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."email" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["email", "admin@test.com"]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  UPDATE "users" SET "last_sign_in_at" = ?, "current_sign_in_at" = ?, "last_sign_in_ip" = ?, "current_sign_in_ip" = ?, "sign_in_count" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["last_sign_in_at", "2015-11-14 09:33:19.067617"], ["current_sign_in_at", "2015-11-14 09:33:19.067617"], ["last_sign_in_ip", "::1"], ["current_sign_in_ip", "::1"], ["sign_in_count", 1], ["updated_at", "2015-11-14 09:33:19.068572"], ["id", 1]]
+  [1m[36m (1.6ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/
+Completed 302 Found in 87ms (ActiveRecord: 2.2ms)
+
+
+Started GET "/" for ::1 at 2015-11-14 17:33:19 +0800
+Processing by ProductsController#index as HTML
+  [1m[35mProduct Load (0.2ms)[0m  SELECT "products".* FROM "products"
+  [1m[36mPhoto Load (0.1ms)[0m  [1mSELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1[0m  [["product_id", 1]]
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1  [["product_id", 2]]
+  [1m[36mPhoto Load (0.1ms)[0m  [1mSELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1[0m  [["product_id", 3]]
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1  [["product_id", 4]]
+  [1m[36mPhoto Load (0.1ms)[0m  [1mSELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1[0m  [["product_id", 5]]
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1  [["product_id", 6]]
+  Rendered products/index.html.haml within layouts/application (5.7ms)
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 1]]
+  Rendered common/_nav.html.haml (1.3ms)
+Completed 200 OK in 93ms (Views: 91.1ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/admin/pages" for ::1 at 2015-11-14 17:33:22 +0800
+Processing by Admin::PagesController#index as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 1]]
+  [1m[36mPage Load (0.2ms)[0m  [1mSELECT "pages".* FROM "pages"[0m
+  Rendered admin/pages/index.html.haml within layouts/admin (3.1ms)
+  Rendered common/_nav.html.haml (4.2ms)
+Completed 200 OK in 99ms (Views: 96.5ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/admin/products" for ::1 at 2015-11-14 17:33:25 +0800
+Processing by Admin::ProductsController#index as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 1]]
+  [1m[36mProduct Load (0.2ms)[0m  [1mSELECT "products".* FROM "products"[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1  [["product_id", 1]]
+  [1m[36mPhoto Load (0.1ms)[0m  [1mSELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1[0m  [["product_id", 2]]
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1  [["product_id", 3]]
+  [1m[36mPhoto Load (0.1ms)[0m  [1mSELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1[0m  [["product_id", 4]]
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1  [["product_id", 5]]
+  [1m[36mPhoto Load (0.1ms)[0m  [1mSELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1[0m  [["product_id", 6]]
+  Rendered admin/products/_product.html.haml (9.4ms)
+  Rendered admin/products/index.html.haml within layouts/admin (12.7ms)
+  Rendered common/_nav.html.haml (0.9ms)
+Completed 200 OK in 108ms (Views: 105.0ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/admin/users" for ::1 at 2015-11-14 17:33:26 +0800
+Processing by Admin::UsersController#index as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.1ms)[0m  SELECT COUNT(*) FROM "users" WHERE "users"."is_admin" = ?  [["is_admin", "t"]]
+  Rendered admin/users/index.html.haml within layouts/admin (3.3ms)
+  Rendered common/_nav.html.haml (0.6ms)
+Completed 200 OK in 107ms (Views: 104.6ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/admin/products" for ::1 at 2015-11-14 17:33:27 +0800
+Processing by Admin::ProductsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 1]]
+  [1m[35mProduct Load (0.2ms)[0m  SELECT "products".* FROM "products"
+  [1m[36mPhoto Load (0.1ms)[0m  [1mSELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1[0m  [["product_id", 1]]
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1  [["product_id", 2]]
+  [1m[36mPhoto Load (0.1ms)[0m  [1mSELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1[0m  [["product_id", 3]]
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1  [["product_id", 4]]
+  [1m[36mPhoto Load (0.1ms)[0m  [1mSELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1[0m  [["product_id", 5]]
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT  "photos".* FROM "photos" WHERE "photos"."product_id" = ? LIMIT 1  [["product_id", 6]]
+  Rendered admin/products/_product.html.haml (6.6ms)
+  Rendered admin/products/index.html.haml within layouts/admin (9.5ms)
+  Rendered common/_nav.html.haml (0.4ms)
+Completed 200 OK in 121ms (Views: 118.9ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/products/1" for ::1 at 2015-11-14 17:33:28 +0800
+Processing by ProductsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mProduct Load (0.1ms)[0m  [1mSELECT  "products".* FROM "products" WHERE "products"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35mPage Load (0.1ms)[0m  SELECT  "pages".* FROM "pages" WHERE "pages"."id" = ? LIMIT 1  [["id", 1]]
+  Rendered pages/stylish_portfolio.html.haml (0.7ms)
+Completed 200 OK in 5ms (Views: 2.1ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/assets/stylish_portfolio/css/stylish-portfolio.css" for ::1 at 2015-11-14 17:33:28 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/portfolio-1.jpg" for ::1 at 2015-11-14 17:33:28 +0800
+
+
+Started GET "/assets/stylish_portfolio/js/jquery.js" for ::1 at 2015-11-14 17:33:28 +0800
+
+
+Started GET "/assets/stylish_portfolio/js/bootstrap.min.js" for ::1 at 2015-11-14 17:33:28 +0800
+
+
+Started GET "/assets/stylish_portfolio/font-awesome/css/font-awesome.min.css" for ::1 at 2015-11-14 17:33:28 +0800
+
+
+Started GET "/assets/stylish_portfolio/css/bootstrap.min.css" for ::1 at 2015-11-14 17:33:28 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/portfolio-2.jpg" for ::1 at 2015-11-14 17:33:28 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/portfolio-4.jpg" for ::1 at 2015-11-14 17:33:28 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/portfolio-3.jpg" for ::1 at 2015-11-14 17:33:28 +0800
+
+
+Started GET "/assets/stylish_portfolio/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0" for ::1 at 2015-11-14 17:33:28 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/bg.jpg" for ::1 at 2015-11-14 17:33:28 +0800
+
+
+Started GET "/assets/stylish_portfolio/img/callout.jpg" for ::1 at 2015-11-14 17:33:28 +0800
