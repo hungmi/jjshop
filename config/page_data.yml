@@ -1,0 +1,40 @@
+defaults: &defaults
+  stylish_portfolio:
+    folder_name: 'stylish_portfolio'
+    title: '時尚櫥窗'
+    description: '適合潮流單品'
+    price: 299
+  creative:
+    folder_name: 'creative'
+    title: '創造力'
+    description: '適合潮流單品'
+    price: 299
+  agency:
+    folder_name: 'agency'
+    title: '總部'
+    description: '適合潮流單品'
+    price: 299
+  business_casual:
+    folder_name: 'business_casual'
+    title: '商業典範'
+    description: '適合潮流單品'
+    price: 299
+  grayscale:
+    folder_name: 'grayscale'
+    title: '灰階'
+    description: '適合潮流單品'
+    price: 299
+  landing_page:
+    folder_name: 'landing_page'
+    title: '最佳登錄頁'
+    description: '適合潮流單品'
+    price: 299
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+# instead read values from the environment.
+production:
+  <<: *defaults

@@ -1,0 +1,33 @@
+/ Static navbar
+%nav.navbar.navbar-default
+  .container-fluid
+    .navbar-header
+      %button.navbar-toggle.collapsed{"aria-controls" => "navbar", "aria-expanded" => "false", "data-target" => "#navbar", "data-toggle" => "collapse", :type => "button"}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      = link_to 'ArtStore', root_path, class: "navbar-brand"
+    #navbar.navbar-collapse.collapse
+      %ul.nav.navbar-nav.navbar-right
+        - if !current_user
+          %li= link_to("登入", new_user_session_path)
+        - else
+          %li
+            = link_to "#" do
+              購物車
+              %i.fa.fa-shopping-cart
+              (0)
+          %li.dropdown
+            %a.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#", :role => "button"}
+              = current_user.email
+              %span.caret
+            %ul.dropdown-menu
+              - if current_user.admin?
+                %li.dropdown-header 頁面
+                %li= link_to '所有頁面', admin_pages_path
+                %li= link_to("新增頁面", new_admin_page_path)
+                %li.divider{:role => "separator"}
+              %li= link_to("登出", destroy_user_session_path, method: :delete)
+    / /.nav-collapse
+  / /.container-fluid

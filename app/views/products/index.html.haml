@@ -1,0 +1,11 @@
+.row
+  - @products.each do |product|
+    .col-xs-6.col-md-3.text-center
+      = link_to product_path(product), data: { 'no_turbolink': true } do
+        - if product.photo.present?
+          = image_tag product.photo.image.thumb.url, class: 'thumbnail'
+        - else
+          = image_tag "http://placehold.it/200x200&text=No Pic", class: 'thumbnail'
+      %p.product-info
+        = product.title.capitalize
+        $ #{product.price}

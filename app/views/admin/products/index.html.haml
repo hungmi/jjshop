@@ -1,0 +1,5 @@
+%h1
+  Products List
+  = link_to 'New Product', new_admin_product_path, class: 'btn btn-primary pull-right', id: 'new-product-btn', data: { disable_with: "Creating..." }
+.row#product-list
+  = render partial: 'product', collection: @products
